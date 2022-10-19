@@ -11,12 +11,12 @@ class UserRepository(Repo):
         """
         return self.executeSelect(sql)
     
-    def insertUser(self, userId : int):
+    def insertUser(self, nom : str, prenom : str) -> bool :
         print ("test")
         sql = f"""
-            INSERT INTO
-            FROM users
-            WHERE id = {userId}
+            INSERT INTO users
+                (prenom, nom)
+            VALUES
+                ('{nom}', '{prenom}');
         """
-        print(sql[0])
-        return "e"
+        return self.executeInsert(sql)

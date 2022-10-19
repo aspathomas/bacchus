@@ -16,18 +16,22 @@ def test_ocr():
 def getUser():
     userId = int(request.args.get("user_id"))
     if userId is None : 
-        return "l'id de l'utilisateur est érroné"
+            return "l'id de l'utilisateur est érroné"
     UserRepo = UserRepository()
     info = UserRepo.getUser(userId)
     return info
 
 @app.route("/user", methods=['POST'])
 def insertUser():
-    nom = str(request.args.get("nom"))
-    prenom = str(request.args.get("prenom"))
-    if nom or prenom is None : 
-        return "il ya un probleme avec le nom ou le prenom"
+    nom = str(request.form.get("nom"))
+    prenom = str(request.form.get("prenom"))
+    print(nom)
+    print(prenom)
+    # if nom or prenom is None :
+    #     return "il ya un probleme avec le nom ou le prenom"
     UserRepo = UserRepository()
-    info = UserRepo.getUser(userId)
-    print (info)
-    return info
+    isInsert = UserRepo.insertUser(nom, prenom)
+    if isInsert is True: 
+        return "reussi"
+    
+    return "echec"
