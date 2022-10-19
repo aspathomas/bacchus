@@ -1,10 +1,9 @@
-import os
 from sqlalchemy import Column, Text
 import psycopg2
 
-class ModelTemplate:
+class Repo:
 
-    def executeSQL(self, SQL : str):
+    def executeSelect(self, SQL : str):
         print(SQL)
         try:
                 conn = psycopg2.connect(

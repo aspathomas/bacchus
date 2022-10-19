@@ -1,7 +1,7 @@
-from flask import Flask
-import psycopg2
+from flask import Flask, request
+from repositories.UserRepository import UserRepository
 from service.test_ocr import TestOcr
-from models.userModel import User
+
 app = Flask(__name__)
 app.debug = True
 
@@ -14,7 +14,20 @@ def test_ocr():
 
 @app.route("/user", methods=['GET'])   
 def getUser():
-    user = User()
-    info = user.getUser(1)
+    userId = int(request.args.get("user_id"))
+    if userId is None : 
+        return "l'id de l'utilisateur est érroné"
+    UserRepo = UserRepository()
+    info = UserRepo.getUser(userId)
+    return info
+
+@app.route("/user", methods=['POST'])
+def insertUser():
+    nom = str(request.args.get("nom"))
+    prenom = str(request.args.get("prenom"))
+    if nom or prenom is None : 
+        return "il ya un probleme avec le nom ou le prenom"
+    UserRepo = UserRepository()
+    info = UserRepo.getUser(userId)
     print (info)
     return info
