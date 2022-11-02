@@ -10,13 +10,29 @@ class UserRepository(Repo):
             WHERE id = {userId}
         """
         return self.executeSelect(sql)
-    
-    def insertUser(self, nom : str, prenom : str) -> bool :
+
+    def getUsers(self, email : str):
         print ("test")
         sql = f"""
+            SELECT *
+            FROM users
+        """
+        return self.executeSelect(sql)
+    
+    def insertUser(self,
+        id : int,
+        nom : str,
+        prenom : str,
+        email : str,
+        mdp : str
+    ) -> bool :
+
+        print ("test")
+
+        sql = f"""
             INSERT INTO users
-                (prenom, nom)
+                (id, prenom, nom, email)
             VALUES
-                ('{nom}', '{prenom}');
+                ({id},'{nom}', '{prenom}', '{email}', '{mdp}' );
         """
         return self.executeInsert(sql)

@@ -1,0 +1,33 @@
+CREATE TABLE users
+(
+    id INT PRIMARY key not NULL,
+    nom VARCHAR(100),
+    prenom VARCHAR(100),
+    email VARCHAR(255),
+    mot_de_passe VARCHAR(255)
+)
+
+CREATE TABLE wine
+(
+    id INT PRIMARY key not NULL,
+    nom VARCHAR(100),
+    region VARCHAR(100),
+    couleur VARCHAR(100),
+    etiquette_url VARCHAR
+)
+
+create table note
+(
+    id INT PRIMARY key not NULL,
+    user_id INT,
+    wine_id INT,
+    note INT,
+    commentaire VARCHAR(255) ,
+    
+   	CONSTRAINT fk_user
+      FOREIGN KEY(user_id) 
+	  REFERENCES users(id),
+	CONSTRAINT fk_wine
+      FOREIGN KEY(wine_id) 
+	  REFERENCES wine(id)
+)
