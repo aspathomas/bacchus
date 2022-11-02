@@ -1,8 +1,8 @@
 from repositories.Repository import Repo
 
-class UserRepository(Repo):
+class WineRepository(Repo):
     
-    def insertUser(self, nom : str, prenom : str) -> bool :
+    def insertWine(self, nom : str, prenom : str) -> bool :
         print ("test")
         sql = f"""
             INSERT INTO wine
