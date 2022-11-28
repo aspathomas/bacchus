@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Text, true
 import psycopg2
+from sqlalchemy import Column, Text, true
+
+
 class Repo:
 
     def executeSelect(self, SQL : str):
@@ -20,7 +22,6 @@ class Repo:
 
                 cur.close()
                 conn.close()
-                print("test2")
                 return data
         except Exception:
             return False
@@ -40,7 +41,6 @@ class Repo:
 
                 cur.close()
                 conn.close()
-                print("test2")
                 return True
         except Exception:
             return False

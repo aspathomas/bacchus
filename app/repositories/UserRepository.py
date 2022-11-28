@@ -11,28 +11,46 @@ class UserRepository(Repo):
         """
         return self.executeSelect(sql)
 
-    def getUsers(self, email : str):
+    def getUsers(self):
         print ("test")
         sql = f"""
             SELECT *
             FROM users
         """
         return self.executeSelect(sql)
+
+    def getUserFromUuid(self, uuid : str):
+        print ("test")
+        sql = f"""
+            SELECT *
+            FROM users
+            WHERE uuid = {uuid}
+            LIMIT 1;
+        """
+        return self.executeSelect(sql)
+
+    def login(self, email : str, mdp : str):
+        sql = f"""
+            SELECT *
+            FROM users
+            WHERE email = '{email}'
+            AND mdp = '{mdp}'
+            LIMIT 1;
+        """
+        return self.executeSelect(sql)
     
     def insertUser(self,
-        id : int,
+        uuid : str,
         nom : str,
         prenom : str,
         email : str,
         mdp : str
     ) -> bool :
 
-        print ("test")
-
         sql = f"""
             INSERT INTO users
-                (id, prenom, nom, email)
+                (uuid, prenom, nom, email, mdp)
             VALUES
-                ({id},'{nom}', '{prenom}', '{email}', '{mdp}' );
+                ('{uuid}','{nom}', '{prenom}', '{email}', '{mdp}' );
         """
         return self.executeInsert(sql)
