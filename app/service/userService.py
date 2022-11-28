@@ -3,10 +3,10 @@ import datetime
 import uuid
 from hashlib import sha1
 from random import random
-
+from models.users import Users
 import jwt
 from flask import jsonify
-from repositories.UserRepository import UserRepository
+#from repositories.UserRepository import UserRepository
 
 
 class UserService:
@@ -18,13 +18,15 @@ class UserService:
         mdp = mdp.encode()
         mdp = sha1(mdp).hexdigest()
 
-        UserRepo = UserRepository()
-        User = UserRepo.login(data["email"], mdp)
-        if User is None: 
-            return "echec"
-        User = User[0]
-        token = jwt.encode({'uuid' : User[2], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=45)}, '004f2af45d3a4e161a7dd2d17fdae47f')
- 
+        user = Users.query.filter_by(email=data["email"], mdp=mdp).first()
+        print(user)
+
+        if user is None: 
+           return "echec"
+           
+        print(user.uuid)
+        token = jwt.encode({'uuid' : user.uuid, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=45)}, '004f2af45d3a4e161a7dd2d17fdae47f')
+        
         return jsonify({'token' : token})
         
 
@@ -37,9 +39,7 @@ class UserService:
         mdp = sha1(mdp).hexdigest()
         userUuid = uuid.uuid4()
 
-        UserRepo = UserRepository()
-        isInsert = UserRepo.insertUser(userUuid, data["nom"], data["prenom"], data["email"], mdp)
-        if isInsert is True: 
-            return "reussi"
+        #if isInsert is True: 
+        #     return "reussi"
         
-        return "echec"
+        # return "echec"
