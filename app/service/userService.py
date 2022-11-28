@@ -7,7 +7,6 @@ from models.users import Users
 from models.model import db
 import jwt
 from flask import jsonify
-#from repositories.UserRepository import UserRepository
 
 
 class UserService:
@@ -30,10 +29,7 @@ class UserService:
         return jsonify({'token' : token})
         
 
-    def insertUser(self, me : Users, data : dict):
-        if me.is_admin is not True :
-            return "action interdite"
-
+    def insertUser(self, data : dict):
         db_users = Users.query.all()
         for db_user in db_users :
             if (db_user.email == data["email"]):

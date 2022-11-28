@@ -15,7 +15,9 @@ CREATE TABLE wine
     nom VARCHAR(100),
     region VARCHAR(100),
     couleur VARCHAR(100),
-    etiquette_url VARCHAR
+    etiquette_url VARCHAR,
+    prix_moyen INT,
+    est_petillant bool
 )
 
 create table note

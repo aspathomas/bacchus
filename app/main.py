@@ -3,6 +3,7 @@ from flask import Flask, request, make_response, jsonify
 from service.test_ocr import TestOcr
 from models.model import db
 from service.userService import UserService
+from service.wineService import WineService
 from models.users import Users
 import jwt
 from functools import wraps
@@ -35,6 +36,8 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorator
 
+
+# route users
 @app.route("/login", methods=['POST'])
 def login():
     data  = {
@@ -45,6 +48,36 @@ def login():
     UserServ = UserService()
     return UserServ.login(data)
 
+@app.route("/user", methods=['POST'])
+def insertUser():
+    data  = {
+        'nom': str(request.form.get("nom")),
+        'prenom': str(request.form.get("prenom")),
+        'email': str(request.form.get("email")),
+        'mdp': str(request.form.get("mdp")),
+    }
+    UserServ = UserService()
+    return UserServ.insertUser(data)
+
+
+# test wine
+@app.route("/wines", methods=['GET'])
+@token_required
+def insertWine(me):
+    WineServ = WineService()
+    return WineServ.getWines()
+    # imagefile = flask.request.files.get('imagefile', '')
+    
+# @app.route("/user", methods=['GET'])   
+# def getUser():
+#     userId = int(request.args.get("user_id"))
+#     if userId is None : 
+#             return "l'id de l'utilisateur est érroné"
+#     UserRepo = UserRepository()
+#     info = UserRepo.getUser(userId)
+#     return info
+
+
 # test ocr
 @app.route('/ocr', methods=['GET'])
 @token_required
@@ -54,32 +87,3 @@ def test_ocr(me):
     texte = test.test_pytesseract()
     #test.test_easyocr()
     return texte
-
-@app.route("/user", methods=['POST'])
-@token_required
-def insertUser(me):
-    data  = {
-        'nom': str(request.form.get("nom")),
-        'prenom': str(request.form.get("prenom")),
-        'email': str(request.form.get("email")),
-        'mdp': str(request.form.get("mdp")),
-    }
-    UserServ = UserService()
-    return UserServ.insertUser(me, data)
-
-@app.route("/wine", methods=['POST'])
-def insertWine():
-    print(request.form)
-    return "qzefs"
-    # if nom or prenom is None :
-    #     return "il ya un probleme avec le nom ou le prenom"
-    
-
-# @app.route("/user", methods=['GET'])   
-# def getUser():
-#     userId = int(request.args.get("user_id"))
-#     if userId is None : 
-#             return "l'id de l'utilisateur est érroné"
-#     UserRepo = UserRepository()
-#     info = UserRepo.getUser(userId)
-#     return info
