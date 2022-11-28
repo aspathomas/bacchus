@@ -35,36 +35,37 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorator
 
-
-# test ocr
-@app.route('/ocr', methods=['GET'])
-@token_required
-def test_ocr(user):
-    print("test")
-    test = TestOcr()
-    texte = test.test_pytesseract()
-    #test.test_easyocr()
-    return texte
-
-# @app.route("/user", methods=['POST'])
-# def insertUser():
-#     data  = {
-#         'nom': str(request.form.get("nom")),
-#         'prenom': str(request.form.get("prenom")),
-#         'email': str(request.form.get("email")),
-#         'mdp': str(request.form.get("mdp")),
-#     }
-#     UserServ = UserService()
-#     return UserServ.insertUser(data)
-
 @app.route("/login", methods=['POST'])
 def login():
     data  = {
         'email': str(request.form.get("email")),
         'mdp': str(request.form.get("mdp")),
     }
+    print(data)
     UserServ = UserService()
     return UserServ.login(data)
+
+# test ocr
+@app.route('/ocr', methods=['GET'])
+@token_required
+def test_ocr(me):
+    print("test")
+    test = TestOcr()
+    texte = test.test_pytesseract()
+    #test.test_easyocr()
+    return texte
+
+@app.route("/user", methods=['POST'])
+@token_required
+def insertUser(me):
+    data  = {
+        'nom': str(request.form.get("nom")),
+        'prenom': str(request.form.get("prenom")),
+        'email': str(request.form.get("email")),
+        'mdp': str(request.form.get("mdp")),
+    }
+    UserServ = UserService()
+    return UserServ.insertUser(me, data)
 
 @app.route("/wine", methods=['POST'])
 def insertWine():

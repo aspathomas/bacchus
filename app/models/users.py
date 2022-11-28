@@ -12,6 +12,16 @@ class Users(db.Model):
    mdp = db.Column(db.String(250))
    is_admin = db.Column(db.Boolean)
 
+   def __init__(self, uuid, nom, prenom, email, mdp):
+      self.uuid = uuid
+      self.nom = nom
+      self.prenom = prenom
+      self.email = email
+      self.mdp = mdp
+      self.is_admin = False
+
+
+
    def afficher(self) :
       print(self.prenom)
       print(self.nom)
