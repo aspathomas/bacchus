@@ -20,12 +20,6 @@ class Users(db.Model):
       self.mdp = mdp
       self.is_admin = False
 
-
-
-   def afficher(self) :
-      print(self.prenom)
-      print(self.nom)
-
    def to_dict(self) :
       return {
          "id" : self.id,
@@ -35,4 +29,10 @@ class Users(db.Model):
          "email" : self.email,
          "mdp" : self.mdp,
          "is_admin" : self.is_admin
+      }
+
+   def to_short_dict(self) :
+      return {
+         "nom" : self.nom,
+         "prenom" : self.prenom,
       }
