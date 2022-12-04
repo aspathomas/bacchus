@@ -18,3 +18,13 @@ class WineService:
             wines [f"""vin_{i}"""] = db_wine.to_dict()
 
         return wines
+
+    def putDescription(self, data: dict):
+        if data["user"].is_admin is False:
+            return "acces interdit"
+
+        wine = Wine.query.filter_by(id=data["wine_id"]).first()
+        wine.description = data["description"]
+        db.session.commit()
+
+        return wine.to_dict()

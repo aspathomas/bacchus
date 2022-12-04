@@ -40,7 +40,8 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorator
 
-
+#-------------------------------------------#
+# user
 # route users
 @app.route("/login", methods=['POST'])
 def login():
@@ -63,27 +64,41 @@ def insertUser():
     UserServ = UserService()
     return UserServ.insertUser(data)
 
-
-# test wine
+#-------------------------------------------#
+# vin
+# insère vin
 @app.route("/wines", methods=['GET'])
 def insertWine():
     WineServ = WineService()
     return WineServ.getWines()
     # imagefile = flask.request.files.get('imagefile', '')
-    
 
+# met une description
+@app.route("/wine/description", methods=['PUT'])
+@token_required
+def putDescription(me):
+    data  = {
+        'user': me,
+        'wine_id': int(request.form.get("wine_id")),
+        'description': str(request.form.get("description"))
+    }
+    WineServ = WineService()
+    return WineServ.putDescription(data)
+    # imagefile = flask.request.files.get('imagefile', '')
 
+#-------------------------------------------#
+# commentaire
 # commentaire depuis utilisateur
 @app.route("/comments/user", methods=['GET'])
 @token_required
 def getCommentairesFromUser(me):
+    user_id = int(request.form.get("user_id"))
     CommServ = CommentaireService()
-    return CommServ.getFromUser(me.id)
+    return CommServ.getFromUser(user_id)
 
 # commentaire depuis vin
 @app.route("/comments/wine", methods=['GET'])
-@token_required
-def getCommentairesFromWine(me):
+def getCommentairesFromWine():
     wine_id = int(request.form.get("wine_id"))
     CommServ = CommentaireService()
     return CommServ.getFromWine(wine_id)
@@ -93,26 +108,38 @@ def getCommentairesFromWine(me):
 @token_required
 def insertCommentaire(me):
     data  = {
-        'user_id': me.id,
+        'user': me,
         'wine_id': int(request.form.get("wine_id")),
         'commentaire': str(request.form.get("commentaire"))
     }
     CommServ = CommentaireService()
     return CommServ.insert(data)
 
+# supprimer un commentaire
+@app.route("/comment/delete", methods=['PUT'])
+@token_required
+def deleteCommentaire(me):
+    data  = {
+        'user': me,
+        'commentaire_id': int(request.form.get("commentaire_id"))
+    }
+    CommServ = CommentaireService()
+    return CommServ.delete(data)
 
 
+#-------------------------------------------#
+#note
 # note depuis utilisateur
 @app.route("/notes/user", methods=['GET'])
 @token_required
 def getNotesFromUser(me):
+    user_id = int(request.form.get("user_id"))
     NoteServ = NoteService()
-    return NoteServ.getFromUser(me.id)
+    return NoteServ.getFromUser(user_id)
 
 # note depuis vin
 @app.route("/notes/wine", methods=['GET'])
-@token_required
-def getNotesFromWine(me):
+def getNotesFromWine():
     wine_id = int(request.form.get("wine_id"))
     NoteServ = NoteService()
     return NoteServ.getFromWine(wine_id)
@@ -122,14 +149,26 @@ def getNotesFromWine(me):
 @token_required
 def insertNote(me):
     data  = {
-        'user_id': me.id,
+        'user': me,
         'wine_id': int(request.form.get("wine_id")),
         'note': int(request.form.get("note"))
     }
     NoteServ = NoteService()
     return NoteServ.insert(data)
 
+# supprimer une note
+@app.route("/note/delete", methods=['PUT'])
+@token_required
+def deleteNote(me):
+    data  = {
+        'user': me,
+        'note_id': int(request.form.get("note_id"))
+    }
+    NoteServ = NoteService()
+    return NoteServ.delete(data)
 
+#-------------------------------------------#
+#process
 @app.route('/processing', methods=['POST'])
 def process():
     file = request.files['file']

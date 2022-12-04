@@ -8,7 +8,7 @@ class Wine(db.Model):
    nom = db.Column(db.String(50))
    region = db.Column(db.String(50))
    couleur = db.Column(db.String(50))
-   etiquette_url = db.Column(db.String(250))
+   description = db.Column(db.String(250))
    est_petillant = db.Column(db.Boolean)
    prix_moyen = db.Column(db.Integer)
 
@@ -18,7 +18,7 @@ class Wine(db.Model):
          "nom" : self.nom,
          "region" : self.region,
          "couleur" : self.couleur,
-         "etiquette_url" : self.etiquette_url,
+         "description" : self.description,
          "est_petillant" : self.est_petillant,
          "prix_moyen" : self.prix_moyen
       }

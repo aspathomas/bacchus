@@ -19,7 +19,6 @@ class UserService:
         mdp = sha1(mdp).hexdigest()
 
         user = Users.query.filter_by(email=data["email"], mdp=mdp).first()
-        print(user)
 
         if user is None: 
            return "echec"
