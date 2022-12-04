@@ -13,9 +13,9 @@ class WineService:
 
     def getWines(self):
         db_wines = Wine.query.all()
-        wines = {}
+        wines = []
         for i, db_wine in enumerate(db_wines) :
-            wines [f"""vin_{i}"""] = db_wine.to_dict()
+            wines.append(db_wine.to_dict())
 
         return wines
 
@@ -25,6 +25,19 @@ class WineService:
 
         wine = Wine.query.filter_by(id=data["wine_id"]).first()
         wine.description = data["description"]
+        db.session.commit()
+
+        return wine.to_dict()
+    
+    def insert(self, data: dict):
+        if data["user"].is_admin is False:
+            return "acces interdit"
+
+        if data["nom"] is None or data["region"] is None or data["couleur"] is None or data["est_petillant"] is None or data["prix_moyen"] is None or data["description"] is None :
+            return "paramètre manquant"
+
+        wine = Wine(data["nom"], data["region"], data["couleur"], data["description"], data["est_petillant"], data["prix_moyen"])
+        db.session.add(wine)
         db.session.commit()
 
         return wine.to_dict()

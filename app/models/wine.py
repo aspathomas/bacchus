@@ -12,6 +12,14 @@ class Wine(db.Model):
    est_petillant = db.Column(db.Boolean)
    prix_moyen = db.Column(db.Integer)
 
+   def __init__(self, nom, region, couleur, description, est_petillant, prix_moyen):
+      self.nom = nom
+      self.region = region
+      self.couleur = couleur
+      self.description = description
+      self.est_petillant = est_petillant
+      self.prix_moyen = prix_moyen
+
    def to_dict(self) :
       return {
          "id" : self.id,

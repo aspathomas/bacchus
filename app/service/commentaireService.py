@@ -33,7 +33,7 @@ class CommentaireService:
         db_commentaires = Commentaire.query.filter_by(wine_id=wine_id)
         print(db_commentaires)
         wine = Wine.query.filter_by(id=wine_id).first()
-        if wine is None:
+        if wine is None :
             return "vin introuvable"
 
         commentaires = []

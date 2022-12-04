@@ -66,12 +66,11 @@ def insertUser():
 
 #-------------------------------------------#
 # vin
-# insère vin
+# récupère les vins
 @app.route("/wines", methods=['GET'])
-def insertWine():
+def getWine():
     WineServ = WineService()
     return WineServ.getWines()
-    # imagefile = flask.request.files.get('imagefile', '')
 
 # met une description
 @app.route("/wine/description", methods=['PUT'])
@@ -84,12 +83,28 @@ def putDescription(me):
     }
     WineServ = WineService()
     return WineServ.putDescription(data)
-    # imagefile = flask.request.files.get('imagefile', '')
+
+# met une description
+@app.route("/wine/insert", methods=['POST'])
+@token_required
+def insertWine(me):
+    data  = {
+        'user': me,
+        'nom': str(request.form.get("nom")),
+        'region': str(request.form.get("region")),
+        'couleur': str(request.form.get("couleur")),
+        'est_petillant': bool(request.form.get("est_petillant")),
+        'prix_moyen': int(request.form.get("prix_moyen")),
+        'description': str(request.form.get("description")),
+    }
+    WineServ = WineService()
+    return WineServ.insert(data)
+
 
 #-------------------------------------------#
 # commentaire
 # commentaire depuis utilisateur
-@app.route("/comments/user", methods=['GET'])
+@app.route("/comments/user", methods=['POST'])
 @token_required
 def getCommentairesFromUser(me):
     user_id = int(request.form.get("user_id"))
@@ -97,7 +112,7 @@ def getCommentairesFromUser(me):
     return CommServ.getFromUser(user_id)
 
 # commentaire depuis vin
-@app.route("/comments/wine", methods=['GET'])
+@app.route("/comments/wine", methods=['POST'])
 def getCommentairesFromWine():
     wine_id = int(request.form.get("wine_id"))
     CommServ = CommentaireService()
@@ -128,9 +143,9 @@ def deleteCommentaire(me):
 
 
 #-------------------------------------------#
-#note
+# note
 # note depuis utilisateur
-@app.route("/notes/user", methods=['GET'])
+@app.route("/notes/user", methods=['POST'])
 @token_required
 def getNotesFromUser(me):
     user_id = int(request.form.get("user_id"))
@@ -138,7 +153,7 @@ def getNotesFromUser(me):
     return NoteServ.getFromUser(user_id)
 
 # note depuis vin
-@app.route("/notes/wine", methods=['GET'])
+@app.route("/notes/wine", methods=['POST'])
 def getNotesFromWine():
     wine_id = int(request.form.get("wine_id"))
     NoteServ = NoteService()
@@ -168,7 +183,7 @@ def deleteNote(me):
     return NoteServ.delete(data)
 
 #-------------------------------------------#
-#process
+# process
 @app.route('/processing', methods=['POST'])
 def process():
     file = request.files['file']
