@@ -16,8 +16,13 @@ services:
       - ./web/:/app/
     ports:
       - 5000:5000
+    expose:
+      - 5000
+    networks:
+      - bacchus-network
     environment:
       - FLASK_APP=app
+      - DATABASE_URL=postgresql://admin2022:toto123@db:5432/urbanisation
     command: ["python", "app.py"]
 
   db:
