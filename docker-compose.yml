@@ -22,6 +22,7 @@ services:
       - bacchus-network
     environment:
       - FLASK_APP=app
+      - FLASK_DEBUG=1
       - DATABASE_URL=postgresql://admin2022:toto123@db:5432/urbanisation
     command: ["python", "app.py"]
 

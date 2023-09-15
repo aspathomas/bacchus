@@ -1,14 +1,7 @@
-
-import datetime
-import uuid
-from hashlib import sha1
-from random import random
 from models.users import Users
 from models.wine import Wine
 from models.commentaire import Commentaire
 from models.model import db
-import jwt
-from flask import jsonify
 
 class CommentaireService:
 
